@@ -6,3 +6,7 @@ Unity 2021.3.36
 
 ### 목차
 - [RecentInfo](https://github.com/redccoma/portfolio/blob/main/Assets/Scripts/RecentInfo.cs) : PlayerPrefs를 사용하여 클라이언트에서 데이터를 간단히 다루는 코드입니다.
+
+
+### 추가예정
+- 간단한 데이터 검색기능
