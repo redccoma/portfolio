@@ -1,6 +1,6 @@
 /*
- 가장 최근 플레이한 데이터를 서버통신없이 클라이언트에 저장하려는 목적의 코드입니다. 
- 저장시 동일 요소는 배제합니다.
+ 가장 최근 플레이한 데이터를 서버통신없이 PlayerPrefs를 사용하여 로컬에 저장하려는 목적의 코드입니다. 
+ 저장시 동일 요소는 배제합니다. 
 */
 
 using System.Collections.Generic;
@@ -48,50 +48,63 @@ namespace RecentInfoSample
         }
     }
 
-    public static class RecentInfoUtil
+    public static class RecentInfoHelper
     {
         private const string KEY = "RecentInfo";
-        
-        /// <summary>
-        /// 최근 정보를 가져옵니다.
-        /// </summary>
-        /// <returns></returns>
+
         public static RecentInfo GetRecentInfo()
         {
-            string str = PlayerPrefs.GetString(KEY, string.Empty);
-            RecentInfo info = null;
+            return LocalDataUtil<RecentInfo>.GetData(KEY);
+        }
+
+        public static void SetRecentInfo(RecentInfo info, int code)
+        {
+            if (info == null)
+                info = new RecentInfo();
+            
+            info.AddItem(code);
+            LocalDataUtil<RecentInfo>.SetData(KEY, info);
+        }
+    }
+    
+    // RecentInfo와 비슷한 데이터들을 읽고 쓰기 편하도록 하는 범용 클래스입니다.
+    public static class LocalDataUtil<T> where T : class, new()
+    {
+        /// <summary>
+        /// 로컬 데이터를 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
+        public static T GetData(string key)
+        {
+            string str = PlayerPrefs.GetString(key, string.Empty);
+            T data = null;
             try
             {
                 if (!string.IsNullOrEmpty(str))
-                    info = JsonConvert.DeserializeObject<RecentInfo>(str);
+                    data = JsonConvert.DeserializeObject<T>(str);
                 
             }
             catch (System.Exception e)
             {
-                Debug.LogWarning($"[RecentInfoUtil] GetRecentInfo() - Deserialize Error: {e.Message}\nStackTrace: {e.StackTrace}");
-                UnityEngine.PlayerPrefs.DeleteKey(KEY);
+                Debug.LogWarning($"[LocalDataUtil] GetData() - Deserialize Error: {e.Message}\nStackTrace: {e.StackTrace}");
+                PlayerPrefs.DeleteKey(key);
             }
             
-            if (info == null)
-                info = new RecentInfo();
-            
-            return info;
-            
+            return data ?? new T();
         }
 
         /// <summary>
         /// 최근 정보를 저장합니다.
         /// </summary>
-        /// <param name="info">GetRecentInfo로 획득한 데이터</param>
-        /// <param name="code">저장한 코드</param>
-        public static void SetRecentInfo(this RecentInfo info, int code)
+        /// <param name="key">PlayerPrefs 키</param>
+        /// <param name="data">저장할 데이터객체</param>
+        public static void SetData(string key, T data)
         {
-            if(info == null)
-                info = new RecentInfo();
+            if(data == null)
+                data = new T();
             
-            info.AddItem(code);
-            string str = JsonConvert.SerializeObject(info);
-            PlayerPrefs.SetString(KEY, str);
+            string str = JsonConvert.SerializeObject(data);
+            PlayerPrefs.SetString(key, str);
         }
 
         /// <summary>
