@@ -1,3 +1,7 @@
+/*
+ List<T>에 저장된 데이터에서 특정 키워드에 해당하는 데이터를 검색하여 반환합니다.
+*/
+
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
