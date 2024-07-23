@@ -2,14 +2,12 @@
  * UISample의 Canvas에 attached 되었습니다.
  * 개발해상도(Canvas Scaler에 입력된 값)를 기준으로 match를 조정합니다.
  */
+
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-namespace UISample
+namespace ResolutionSample
 {
     [ExecuteAlways]
     [RequireComponent(typeof(CanvasScaler))]

@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b44d4a3f8f2374fae6a2f83008339f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollView: {fileID: 1956770302}
+  scrollView: {fileID: 1956770306}
 --- !u!1 &1922183909
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 1956770305}
   - component: {fileID: 1956770304}
   - component: {fileID: 1956770303}
-  - component: {fileID: 1956770302}
+  - component: {fileID: 1956770306}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -431,24 +431,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1956770302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956770300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7812f785ec7cb24192e2abfa93fc5a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scrollRect: {fileID: 1956770303}
-  verticalItemPrefab: {fileID: 3872248518726376861, guid: b4f84f144baa83c48821ff140e9e900b, type: 3}
-  horizontalItemPrefab: {fileID: 3872248518726376861, guid: 48a0541a96f57af409c8fc0170b6a7df, type: 3}
-  content: {fileID: 1922183910}
-  scrollDirection: 1
-  itemSpacing: 10
 --- !u!114 &1956770303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,6 +499,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1956770300}
   m_CullTransparentMesh: 1
+--- !u!114 &1956770306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956770300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d49c692dc046fa47a661c67348284a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollRect: {fileID: 1956770303}
+  itemPrefab: {fileID: 3872248518726376861, guid: 48a0541a96f57af409c8fc0170b6a7df, type: 3}
+  content: {fileID: 1922183910}
+  scrollDirection: 1
+  itemSpacing: 20
 --- !u!1 &2091799532
 GameObject:
   m_ObjectHideFlags: 0
