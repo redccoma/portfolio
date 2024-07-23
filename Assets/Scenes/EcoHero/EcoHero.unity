@@ -444,9 +444,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollRect: {fileID: 1956770303}
-  itemPrefab: {fileID: 3872248518726376861, guid: 48a0541a96f57af409c8fc0170b6a7df, type: 3}
+  verticalItemPrefab: {fileID: 3872248518726376861, guid: b4f84f144baa83c48821ff140e9e900b, type: 3}
+  horizontalItemPrefab: {fileID: 3872248518726376861, guid: 48a0541a96f57af409c8fc0170b6a7df, type: 3}
   content: {fileID: 1922183910}
   scrollDirection: 1
+  itemSpacing: 10
 --- !u!114 &1956770303
 MonoBehaviour:
   m_ObjectHideFlags: 0

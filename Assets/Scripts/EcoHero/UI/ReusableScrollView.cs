@@ -1,12 +1,17 @@
+/*
+ * ScrollRect를 이용하여 아이템재사용이 가능한 스크롤뷰 구현
+ */
+
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace EcoHero.UI
 {
     public class ReusableScrollView : MonoBehaviour
     {
-        public class PoolData
+        private class PoolData
         {
             private readonly ScrollViewItem viewItem;
             public readonly GameObject CachedGameObject;
@@ -27,7 +32,17 @@ namespace EcoHero.UI
         
         public enum ScrollDirection
         {
+            /// <summary>
+            /// 수직 스크롤.
+            /// 자식이 화면을 넘어갈때는 상단정렬 및 스크롤 가능
+            /// 그외 가운데 정렬 및 스크롤 정지
+            /// </summary>
             Vertical,
+            /// <summary>
+            /// 수평 스크롤.
+            /// 자식이 화면을 넘어갈때는 왼쪽정렬 및 스크롤 가능
+            /// 그외 가운데 정렬 및 스크롤 정지
+            /// </summary>
             Horizontal
         }
         
@@ -35,9 +50,12 @@ namespace EcoHero.UI
         private const int BUFFER_ITEMS = 1;
 
         public ScrollRect scrollRect;
-        public GameObject itemPrefab;
+        public GameObject verticalItemPrefab; 
+        public GameObject horizontalItemPrefab;
         public RectTransform content;
         public ScrollDirection scrollDirection = ScrollDirection.Vertical;
+        [Range(0, 100)]
+        public float itemSpacing = 10f;
 
         // 오브젝트 풀 리스트
         private List<PoolData> itemPoolList = new List<PoolData>();
@@ -62,15 +80,31 @@ namespace EcoHero.UI
             if (isInitialized)
                 return;
             
+            if (scrollDirection == ScrollDirection.Vertical)
+            {
+                content.anchorMin = new Vector2(0.5f, 1);
+                content.anchorMax = new Vector2(0.5f, 1);
+                content.pivot = new Vector2(0.5f, 1);
+            }
+            else
+            {
+                content.anchorMin = new Vector2(0, 0.5f);
+                content.anchorMax = new Vector2(0, 0.5f);
+                content.pivot = new Vector2(0, 0.5f);
+            }
+            
             // 아이템의 크기 계산
-            RectTransform itemRect = itemPrefab.GetComponent<RectTransform>();
+            RectTransform itemRect = scrollDirection == ScrollDirection.Horizontal ?
+                horizontalItemPrefab.GetComponent<RectTransform>() :
+                verticalItemPrefab.GetComponent<RectTransform>();            
+            
             itemSize = new Vector2(itemRect.rect.width, itemRect.rect.height);
             
             // 화면에 표시될 수 있는 아이템 수 계산 (버퍼 아이템갯수+1)
             if (scrollDirection == ScrollDirection.Vertical)
-                itemsPerScreen = Mathf.CeilToInt(scrollRect.viewport.rect.height / itemSize.y);
+                itemsPerScreen = Mathf.CeilToInt(scrollRect.viewport.rect.height / (itemSize.y + itemSpacing));
             else
-                itemsPerScreen = Mathf.CeilToInt(scrollRect.viewport.rect.width / itemSize.x);
+                itemsPerScreen = Mathf.CeilToInt(scrollRect.viewport.rect.width / (itemSize.x + itemSpacing));
 
             // 스크롤 방향 설정
             scrollRect.vertical = scrollDirection == ScrollDirection.Vertical;
@@ -84,7 +118,7 @@ namespace EcoHero.UI
 
         private void UpdateContentSize()
         {
-            float contentSize = dataList.Count * (scrollDirection == ScrollDirection.Vertical ? itemSize.y : itemSize.x);
+            float contentSize = (dataList.Count * (scrollDirection == ScrollDirection.Vertical ? itemSize.y : itemSize.x)) + ((dataList.Count - 1) * itemSpacing);
 
             if (scrollDirection == ScrollDirection.Vertical)
             {
@@ -96,9 +130,12 @@ namespace EcoHero.UI
             }
         }
 
-        private PoolData CreatePoolItem()
+        private void CreatePoolItem()
         {
-            GameObject item = Instantiate(itemPrefab, content);
+            GameObject item = scrollDirection == ScrollDirection.Vertical ?
+                Instantiate(verticalItemPrefab, content) :
+                Instantiate(horizontalItemPrefab, content);
+            
             ScrollViewItem scrollViewItem = item.GetComponent<ScrollViewItem>();
             RectTransform rectTransform = item.GetComponent<RectTransform>();
     
@@ -111,13 +148,12 @@ namespace EcoHero.UI
             else
             {
                 rectTransform.anchorMin = new Vector2(0, 0);
-                rectTransform.anchorMax = new Vector2(0, 1);
+                rectTransform.anchorMax = new Vector2(0, 0.5f);
                 rectTransform.pivot = new Vector2(0, 0.5f);
             }
 
             PoolData poolData = new PoolData(scrollViewItem, item, rectTransform);
             itemPoolList.Add(poolData);
-            return poolData;
         }
 
         private void UpdateItems()
@@ -125,9 +161,11 @@ namespace EcoHero.UI
             if (!isScrollable)
             {
                 // 스크롤이 불가능한 경우 중앙 정렬
+                float totalSize = (dataList.Count * (scrollDirection == ScrollDirection.Vertical ? itemSize.y : itemSize.x)) + ((dataList.Count - 1) * itemSpacing);
+                
                 float startPosition = scrollDirection == ScrollDirection.Vertical
-                    ? (scrollRect.viewport.rect.height - dataList.Count * itemSize.y) / 2
-                    : (scrollRect.viewport.rect.width - dataList.Count * itemSize.x) / 2;
+                    ? (scrollRect.viewport.rect.height - totalSize) / 2
+                    : (scrollRect.viewport.rect.width - totalSize) / 2;
 
                 for (int i = 0; i < itemPoolList.Count; i++)
                 {
@@ -137,8 +175,8 @@ namespace EcoHero.UI
                         itemPoolList[i].SetData(dataList[i]);
                         
                         itemPoolList[i].CachedRectTransform.anchoredPosition = scrollDirection == ScrollDirection.Vertical
-                            ? new Vector2(0, -startPosition - i * itemSize.y)
-                            : new Vector2(startPosition + i * itemSize.x, 0);
+                            ? new Vector2(0, -startPosition - i * (itemSize.y + itemSpacing))
+                            : new Vector2(startPosition + i * (itemSize.x + itemSpacing), 0);
                     }
                     else
                     {
@@ -153,7 +191,7 @@ namespace EcoHero.UI
                     ? Mathf.Abs(content.anchoredPosition.y)
                     : Mathf.Abs(content.anchoredPosition.x);
                 
-                int startIndex = Mathf.FloorToInt(contentPosition / (scrollDirection == ScrollDirection.Vertical ? itemSize.y : itemSize.x));
+                int startIndex = Mathf.FloorToInt(contentPosition / (scrollDirection == ScrollDirection.Vertical ? (itemSize.y + itemSpacing) : (itemSize.x + itemSpacing)));
                 startIndex = Mathf.Clamp(startIndex, 0, Mathf.Max(0, dataList.Count - itemsPerScreen));
 
                 for (int i = 0; i < itemPoolList.Count; i++)
@@ -165,8 +203,8 @@ namespace EcoHero.UI
                         itemPoolList[i].SetData(dataList[dataIndex]);
                 
                         itemPoolList[i].CachedRectTransform.anchoredPosition = scrollDirection == ScrollDirection.Vertical
-                            ? new Vector2(0, -dataIndex * itemSize.y)
-                            : new Vector2(dataIndex * itemSize.x, 0);
+                            ? new Vector2(0, -dataIndex * (itemSize.y + itemSpacing))
+                            : new Vector2(dataIndex * (itemSize.x + itemSpacing), 0);
                     }
                     else
                     {
@@ -223,6 +261,7 @@ namespace EcoHero.UI
         private void AdjustPoolSize()
         {
             int requiredPoolSize = Mathf.Min(dataList.Count, itemsPerScreen + BUFFER_ITEMS);
+            requiredPoolSize = Mathf.Max(requiredPoolSize, itemsPerScreen); // 최소한 화면에 표시될 수 있는 아이템 수만큼은 유지
 
             // 풀 크기가 부족한 경우 아이템 추가
             while (itemPoolList.Count < requiredPoolSize)
@@ -231,6 +270,13 @@ namespace EcoHero.UI
             }
 
             // 풀 크기가 과도한 경우 매번 Destroy하기엔 비용이 오히려 커질수 있으므로 적정선에서 풀 생성만 하고 지우진 않습니다.
+            // 풀 크기를 줄여야 할 필요가 있다면 아래 로직은 주석 해제해서 사용합니다.
+            // while (itemPoolList.Count > requiredPoolSize)
+            // {
+            //     int lastIndex = itemPoolList.Count - 1;
+            //     Destroy(itemPoolList[lastIndex].CachedGameObject);
+            //     itemPoolList.RemoveAt(lastIndex);
+            // }
         }
         
         private void UpdateScrollability()
