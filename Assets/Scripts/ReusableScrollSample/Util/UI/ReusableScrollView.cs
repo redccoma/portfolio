@@ -204,7 +204,7 @@ namespace ReusableScrollSample.Util.UI
         }
 
         /// <summary>
-        /// ScrollRect의 뷰포트 
+        /// ScrollRect의 뷰포트 사이즈와 content.anchoredPosition 기반으로 아이템의 위치 갱신 및 데이터 갱신을 처리합니다.
         /// </summary>
         private void UpdateItems()
         {
