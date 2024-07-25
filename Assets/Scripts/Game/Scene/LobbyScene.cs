@@ -1,4 +1,7 @@
-using System.Collections;
+/*
+ * Lobby 씬 전체를 담당합니다.
+ */
+
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine;
+/*
+ * UI에서 발생되는 이벤트 송신을 담당합니다.
+ */
 
 using Game.Util.EventHandler;
 
@@ -24,7 +22,7 @@ namespace Game.GameEntry.UI
 
         public void OnClickStartButton()
         {
-            DoEvent(Event.StartButtonClick, 1);
+            DoEvent(Event.StartButtonClick);
         }
     }    
 }

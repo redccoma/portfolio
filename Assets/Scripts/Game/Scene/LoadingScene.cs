@@ -1,10 +1,7 @@
 /*
- * Loading 씬은 진입후 SceneManager가 가지고 있는 NextScene을 확인하여 해당 씬을 로드하는 역할을 한다.
+ * Loading 씬은 진입후 다음 씬 로딩전까지 화면전환 및 프로그래스바를 담당합니다.
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 

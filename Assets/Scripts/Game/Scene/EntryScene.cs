@@ -1,4 +1,6 @@
-using System;
+/*
+ * Entry 씬 전체를 관리합니다.
+ */
 
 using UnityEngine;
 
