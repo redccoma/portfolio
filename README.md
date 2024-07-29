@@ -9,6 +9,7 @@ Unity 2021.3.36
 - [SearchList](https://github.com/redccoma/portfolio/blob/main/Assets/Scripts/SearchListSample/SearchList.cs) : List에 담긴 커스텀 클래스 타입의 데이터들중 키워드 검색을 통해 해당하는 데이터를 찾는 코드입니다
 - [CanvasScalerAdjust](https://github.com/redccoma/portfolio/blob/main/Assets/Scripts/UISample/CanvasScalerAdjust.cs) : UI 해상도 처리에 대한 코드 및 샘플씬 입니다.(Scene/UISample.scene)
 - [ReusableScrollView](https://github.com/redccoma/portfolio/blob/main/Assets/Scenes/ReusableScrollSample.unity) : 아이템 재사용 스크롤뷰 샘플씬 입니다. [Scripts/ReusableScrollSample](https://github.com/redccoma/portfolio/tree/main/Assets/Scripts/ReusableScrollSample) 의 코드로만 이루어져있습니다.
+- 게임 : Game_Start 씬을 선택한 상태에서 Editor를 통해 실행합니다. (미니게임추가 예정)
 
 
 ### 추가예정
