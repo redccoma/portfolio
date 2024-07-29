@@ -28,7 +28,7 @@ namespace Game.Scene
 
         private void OnClickStartButton(object[] args)
         {
-            SceneManager.LoadScene(SceneManager.SceneType.Lobby);
+            SceneManager.LoadScene(SceneManager.SceneType.Entry, SceneManager.SceneType.Lobby);
         }
     }
 }
