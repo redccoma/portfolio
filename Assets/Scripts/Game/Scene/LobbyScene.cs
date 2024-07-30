@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Game.GameLobby;
+using Game.Manager;
 
 namespace Game.Scene
 {
@@ -25,9 +26,25 @@ namespace Game.Scene
             scrollView.UpdateData(dataList, OnClickStageItem);
         }
         
-        void OnClickStageItem(StageData data)
+        private void OnClickStageItem(StageData data)
         {
-            Debug.Log(data.Index);
+            GoStage(data.Index);
+        }
+
+        private void GoStage(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    SceneManager.LoadScene(SceneManager.SceneType.Lobby, SceneManager.SceneType.Stage1);
+                    break;
+                case 1:
+                    SceneManager.LoadScene(SceneManager.SceneType.Lobby, SceneManager.SceneType.Stage2);
+                    break;
+                case 2:
+                    SceneManager.LoadScene(SceneManager.SceneType.Lobby, SceneManager.SceneType.Stage3);
+                    break;
+            }
         }
     }    
 }
