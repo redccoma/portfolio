@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using ReusableScrollSample.UI.ScrollView;
+using Game.GameLobby;
 
 namespace Game.Scene
 {
@@ -22,7 +22,12 @@ namespace Game.Scene
                 dataList.Add(data);
             }
             
-            scrollView.UpdateData(dataList);
+            scrollView.UpdateData(dataList, OnClickStageItem);
+        }
+        
+        void OnClickStageItem(StageData data)
+        {
+            Debug.Log(data.Index);
         }
     }    
 }

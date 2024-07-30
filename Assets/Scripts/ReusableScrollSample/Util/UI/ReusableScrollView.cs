@@ -4,6 +4,7 @@
  * 화면을 넘길 경우 왼쪽 정렬(Horizontal) 혹은 상단 정렬(Vertical) 및 스크롤 가능
  */
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,9 +43,9 @@ namespace ReusableScrollSample.Util.UI
                 CachedRectTransform = r;
             }
 
-            public void SetData(int index, T data)
+            public void SetData(T data, Action<T> callback)
             {
-                viewItem.SetData(index, data);
+                viewItem.SetData(data, callback);
             }
         }
         
@@ -81,6 +82,8 @@ namespace ReusableScrollSample.Util.UI
         // 초기화
         private bool isInitialized = false;
 
+        private Action<T> onClickCallback;
+
         private float CurrentPosition => scrollDirection == ScrollDirection.Vertical ? Mathf.Abs(content.anchoredPosition.y) : Mathf.Abs(content.anchoredPosition.x);
         private float ItemSize => scrollDirection == ScrollDirection.Vertical ? itemSize.y : itemSize.x;
         private float ItemSizeWithSpacing => ItemSize + itemSpacing;
@@ -91,7 +94,7 @@ namespace ReusableScrollSample.Util.UI
         /// 스크롤뷰 아이템 생성
         /// </summary>
         /// <param name="newData"></param>
-        public void UpdateData(List<T> newData)
+        public void UpdateData(List<T> newData, Action<T> callback = null)
         {
             dataList = new List<T>(newData);
             
@@ -99,6 +102,8 @@ namespace ReusableScrollSample.Util.UI
             {
                 InitializeScrollView();
             }
+
+            onClickCallback = callback;
             
             UpdateContentSize();
             AdjustPoolSize();
@@ -221,7 +226,7 @@ namespace ReusableScrollSample.Util.UI
                     if (i < dataList.Count)
                     {
                         itemPoolList[i].CachedGameObject.SetActive(true);
-                        itemPoolList[i].SetData(i, dataList[i]);
+                        itemPoolList[i].SetData(dataList[i], onClickCallback);
                         itemPoolList[i].CachedRectTransform.anchoredPosition = scrollDirection == ScrollDirection.Vertical
                             ? new Vector2(0, -startPosition - i * ItemSizeWithSpacing)
                             : new Vector2(startPosition + i * ItemSizeWithSpacing, 0);
@@ -246,7 +251,7 @@ namespace ReusableScrollSample.Util.UI
                     if (dataIndex < dataList.Count)
                     {
                         itemPoolList[i].CachedGameObject.SetActive(true);
-                        itemPoolList[i].SetData(dataIndex, dataList[dataIndex]);
+                        itemPoolList[i].SetData(dataList[dataIndex], onClickCallback);
                         itemPoolList[i].CachedRectTransform.anchoredPosition = scrollDirection == ScrollDirection.Vertical
                             ? new Vector2(0, -dataIndex * ItemSizeWithSpacing)
                             : new Vector2(dataIndex * ItemSizeWithSpacing, 0);
@@ -367,7 +372,7 @@ namespace ReusableScrollSample.Util.UI
     
     public interface IScrollViewItem<T>
     {
-        void SetData(int index, T data);
+        void SetData(T data, Action<T> callback);
     }
 }
 

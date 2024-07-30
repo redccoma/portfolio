@@ -7,26 +7,28 @@ using ReusableScrollSample.Util.UI;
 using UnityEngine;
 using Text = TMPro.TextMeshProUGUI;
 
-namespace ReusableScrollSample.UI.ScrollView
+namespace Game.GameLobby
 {
     // 스크롤뷰 아이템 프리팹에 attached
     public class StageScrollViewItem : MonoBehaviour, IScrollViewItem<StageData>
     {
-        public Text titleText;
+        public Action<StageData> OnClickStageItem;
+        
+        [SerializeField]
+        private Text titleText;
         
         private StageData mData;
-        private Action<StageData> onClickStageItem;
 
         public void SetData(StageData data, Action<StageData> callback)
         {
             mData = data;
             titleText.text = data.Title;
-            onClickStageItem = callback;
+            OnClickStageItem = callback;
         }
 
         public void OnClickButton()
         {
-            onClickStageItem?.Invoke(mData);
+            OnClickStageItem?.Invoke(mData);
         }
     }
 }

@@ -87,13 +87,11 @@ namespace Game.Manager
             // 다음 씬을 보여주기위한 타이밍 대기.
             LoadingScene.OnShowNextScene = () =>
             {
-                Debug.Log(1);
                 loadOperation.allowSceneActivation = true;
             };
             
             LoadingScene.OnLoadingComplete = () =>
             {
-                Debug.Log(2);
                 // 로딩씬 remove
                 Manager.UnloadSceneAsync(loading);
             };

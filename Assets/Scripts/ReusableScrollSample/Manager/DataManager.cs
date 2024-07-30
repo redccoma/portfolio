@@ -17,7 +17,12 @@ namespace ReusableScrollSample.Manager
                 dataList.Add(data);
             }
             
-            scrollView.UpdateData(dataList);
+            scrollView.UpdateData(dataList, OnClickStageItem);
+        }
+        
+        private void OnClickStageItem(StageData data)
+        {
+            Debug.Log(data.Index);
         }
     }
 
