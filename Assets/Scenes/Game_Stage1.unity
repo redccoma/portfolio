@@ -484,8 +484,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapSize: {x: 64, y: 40}
-  minimumDivideRate: 0.4
-  maximumDivideRate: 0.2
+  minRate: 0.4
+  maxRate: 0.2
   maxIteration: 4
   itemTilemap: {fileID: 689411186}
   groundTilemap: {fileID: 1616275383}

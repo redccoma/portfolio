@@ -12,32 +12,35 @@ namespace Game.GameStage1
 {
     public class MapGenerator : MonoBehaviour
     {
+        [Header("Map Generation Parameters")]
         [SerializeField]
         private Vector2Int mapSize;
         [SerializeField]
-        private float minimumDivideRate; //공간이 나눠지는 최소 비율
+        private float minRate;
         [SerializeField]
-        private float maximumDivideRate; //공간이 나눠지는 최대 비율
+        private float maxRate;
         [SerializeField]
-        private int maxIteration; //트리의 높이, 높을 수록 방을 더 자세히 나누게 됨
+        private int maxIteration;
 
+        [Header("Tilemaps")]
         [SerializeField]
         private Tilemap itemTilemap;
         [SerializeField]
         private Tilemap groundTilemap;
+        
+        [Header("Tiles")]
         [SerializeField]
-        private Tile roomTile; //방을 구성하는 타일
-
+        private Tile roomTile;
         [SerializeField]
-        private Tile itemTile;  // 횃불증가 아이템 타일 
+        private Tile itemTile; 
         [SerializeField] 
         private Tile wallTile;
         [SerializeField]
         private Tile escapeTile;
-        
         [SerializeField] 
-        private Tile outTile; //방 외부의 타일
-
+        private Tile outTile;
+        
+        [Header("Player")]
         [SerializeField]
         private Transform player;
 
@@ -52,11 +55,14 @@ namespace Game.GameStage1
             PlaceEscapeTileAndPlayer();
         }
         
+        /// <summary>
+        /// 탈출 타일과 플레이어를 가장 멀리 떨어진 방에 배치
+        /// </summary>
         private void PlaceEscapeTileAndPlayer()
         {
             if (leafRooms.Count < 2)
             {
-                Debug.LogError("Not enough rooms to place escape tile and player");
+                Debug.LogError("방 갯수 부족.");
                 return;
             }
 
@@ -65,6 +71,10 @@ namespace Game.GameStage1
             PlacePlayer(furthestRooms[1]);
         }
         
+        /// <summary>
+        /// 가장 멀리 떨어진 두 방을 찾는 메서드
+        /// </summary>
+        /// <returns></returns>
         private Room[] FindFurthestRooms()
         {
             float maxDistance = 0;
@@ -87,12 +97,20 @@ namespace Game.GameStage1
             return furthestRooms;
         }
         
+        /// <summary>
+        /// 지정된 방에 탈출 타일 배치
+        /// </summary>
+        /// <param name="room"></param>
         private void PlaceEscapeTile(Room room)
         {
             Vector3Int tilePosition = GetRandomPositionInRoom(room);
             SetItemTile(tilePosition, escapeTile);
         }
 
+        /// <summary>
+        /// 지정된 방에 플레이어 배치
+        /// </summary>
+        /// <param name="room"></param>
         private void PlacePlayer(Room room)
         {
             Vector3Int tilePosition = GetRandomPositionInRoom(room);
@@ -100,6 +118,11 @@ namespace Game.GameStage1
             player.position = worldPosition;
         }
         
+        /// <summary>
+        /// 방 내의 랜덤한 위치 반환
+        /// </summary>
+        /// <param name="room"></param>
+        /// <returns></returns>
         private Vector3Int GetRandomPositionInRoom(Room room)
         {
             int x = Random.Range(room.rect.x, room.rect.x + room.rect.width);
@@ -107,10 +130,14 @@ namespace Game.GameStage1
             return new Vector3Int(x, y, 0);
         }
 
+        /// <summary>
+        /// 맵 생성의 전체 프로세스를 관리
+        /// </summary>
         private void GenerateMap()
         {
             FillBackground();
             
+            // 전체 크기를 가진 방생성
             Room rootRoom = new Room(new RectInt(0, 0, mapSize.x, mapSize.y));
             
             DivideRoom(rootRoom, 0);
@@ -119,12 +146,18 @@ namespace Game.GameStage1
             FillWalls();
         }
 
+        /// <summary>
+        /// 재귀적으로 방을 나누는 함수
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="iteration"></param>
         private void DivideRoom(Room room, int iteration)
         {
-            if (iteration == maxIteration) return;
+            if (iteration == maxIteration)
+                return;
 
             int maxLength = Mathf.Max(room.rect.width, room.rect.height);
-            int split = Mathf.RoundToInt(Random.Range(maxLength * minimumDivideRate, maxLength * maximumDivideRate));
+            int split = Mathf.RoundToInt(Random.Range(maxLength * minRate, maxLength * maxRate));
             
             room.PartitionRoom(split);
 
@@ -132,6 +165,11 @@ namespace Game.GameStage1
             DivideRoom(room.partitionB, iteration + 1);
         }
 
+        /// <summary>
+        /// 방을 생성하고 leafRooms에 추가
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="iteration"></param>
         private void GenerateRooms(Room room, int iteration)
         {
             if (iteration == maxIteration)
@@ -141,10 +179,16 @@ namespace Game.GameStage1
                 return;
             }
             
+            // 방 나누기!
             GenerateRooms(room.partitionA, iteration + 1);
             GenerateRooms(room.partitionB, iteration + 1);
         }
 
+        /// <summary>
+        /// 매개변수 좌표와 크기를 기반으로 방생성
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <returns></returns>
         private RectInt GenerateRoom(RectInt rect)
         {
             int width = Random.Range(rect.width / 2, rect.width - 1);
@@ -153,13 +197,21 @@ namespace Game.GameStage1
             int y = rect.y + Random.Range(1, rect.height - height);
             
             RectInt roomRect = new RectInt(x, y, width, height);
+            
             FillRoom(roomRect);
+            
             return roomRect;
         }
 
+        /// <summary>
+        /// 방들을 연결하는 복도를 생성
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="iteration"></param>
         private void GenerateCorridors(Room room, int iteration)
         {
-            if (iteration == maxIteration) return;
+            if (iteration == maxIteration)
+                return;
             
             Vector2Int leftCenter = room.partitionA.center2Int;
             Vector2Int rightCenter = room.partitionB.center2Int;
@@ -171,22 +223,41 @@ namespace Game.GameStage1
             GenerateCorridors(room.partitionB, iteration + 1);
         }
 
+        /// <summary>
+        /// 가로 복도 그리기
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
         private void DrawHorizontalCorridor(Vector2Int start, Vector2Int end)
         {
-            for (int i = Mathf.Min(start.x, end.x); i <= Mathf.Max(start.x, end.x); i++)
+            int min = Mathf.Min(start.x, end.x);
+            int max = Mathf.Max(start.x, end.x);
+            
+            for (int i = min; i <= max; i++)
             {
                 SetGroundTile(new Vector3Int(i, start.y, 0), roomTile);
             }
         }
 
+        /// <summary>
+        /// 세로 복도 그리기
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
         private void DrawVerticalCorridor(Vector2Int start, Vector2Int end)
         {
-            for (int j = Mathf.Min(start.y, end.y); j <= Mathf.Max(start.y, end.y); j++)
+            int min = Mathf.Min(start.y, end.y);
+            int max = Mathf.Max(start.y, end.y);
+            
+            for (int i = min; i <= max; i++)
             {
-                SetGroundTile(new Vector3Int(end.x, j, 0), roomTile);
+                SetGroundTile(new Vector3Int(end.x, i, 0), roomTile);
             }
         }
 
+        /// <summary>
+        /// outtile로 채워진 배경을 생성
+        /// </summary>
         private void FillBackground()
         {
             for (int i = -BACKGROUND_PADDING; i < mapSize.x + BACKGROUND_PADDING; i++)
@@ -198,13 +269,18 @@ namespace Game.GameStage1
             }
         }
         
+        /// <summary>
+        /// 벽 타일 채우기
+        /// </summary>
         private void FillWalls()
         {
             for (int i = 0; i < mapSize.x; i++)
             {
                 for (int j = 0; j < mapSize.y; j++)
                 {
-                    if (IsOutTile(i, j) && HasAdjacentRoomTile(i, j))
+                    bool isOutTile = groundTilemap.GetTile(GetAdjustedPosition(i, j)) == outTile;
+                    
+                    if (isOutTile && HasAdjacentRoomTile(i, j))
                     {
                         SetGroundTile(new Vector3Int(i, j, 0), wallTile);
                     }
@@ -212,11 +288,12 @@ namespace Game.GameStage1
             }
         }
 
-        private bool IsOutTile(int x, int y)
-        {
-            return groundTilemap.GetTile(GetAdjustedPosition(x, y)) == outTile;
-        }
-
+        /// <summary>
+        /// 주변에 roomTile이 있는지 확인
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         private bool HasAdjacentRoomTile(int x, int y)
         {
             for (int dx = -1; dx <= 1; dx++)
@@ -233,6 +310,10 @@ namespace Game.GameStage1
             return false;
         }
 
+        /// <summary>
+        /// 지정된 영역에 roolTile 채우기.
+        /// </summary>
+        /// <param name="rect"></param>
         private void FillRoom(RectInt rect)
         {
             bool isItemCreated = false;
@@ -252,16 +333,32 @@ namespace Game.GameStage1
             }
         }
 
+        /// <summary>
+        /// 맵 전체 tilemap에 타일을 배치하는 함수
+        /// </summary>
+        /// <param name="position">생성위치</param>
+        /// <param name="tile">생성타일</param>
         private void SetGroundTile(Vector3Int position, Tile tile)
         {
             groundTilemap.SetTile(GetAdjustedPosition(position.x, position.y), tile);
         }
 
+        /// <summary>
+        /// 아이템 타일맵에 타일을 배치하는 함수
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="tile"></param>
         private void SetItemTile(Vector3Int position, Tile tile)
         {
             itemTilemap.SetTile(GetAdjustedPosition(position.x, position.y), tile);
         }
 
+        /// <summary>
+        /// 맵 중앙을 기준으로 조정된 위치를 반환하는 메서드
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         private Vector3Int GetAdjustedPosition(int x, int y)
         {
             return new Vector3Int(x - mapSize.x / 2, y - mapSize.y / 2, 0);
