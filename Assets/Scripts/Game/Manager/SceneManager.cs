@@ -4,7 +4,7 @@
  */
 using System;
 using System.Collections;
-using Game.Scene;
+using Game.GameLoading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -89,12 +89,14 @@ namespace Game.Manager
             {
                 loadOperation.allowSceneActivation = true;
             };
-            
-            LoadingScene.OnLoadingComplete = () =>
-            {
-                // 로딩씬 remove
-                Manager.UnloadSceneAsync(loading);
-            };
+
+            LoadingScene.OnLoadingComplete -= UnloadLoadingScene;
+            LoadingScene.OnLoadingComplete += UnloadLoadingScene;
+        }
+        
+        private static void UnloadLoadingScene()
+        {
+            Manager.UnloadSceneAsync(GetSceneName(SceneType.Loading));
         }
 
         private static string GetSceneName(SceneType type)

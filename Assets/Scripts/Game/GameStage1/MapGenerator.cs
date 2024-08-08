@@ -334,7 +334,7 @@ namespace Game.GameStage1
         }
 
         /// <summary>
-        /// 맵 전체 tilemap에 타일을 배치하는 함수
+        /// 맵 전체 tilemap에 타일을 배치
         /// </summary>
         /// <param name="position">생성위치</param>
         /// <param name="tile">생성타일</param>
@@ -344,7 +344,7 @@ namespace Game.GameStage1
         }
 
         /// <summary>
-        /// 아이템 타일맵에 타일을 배치하는 함수
+        /// 아이템 타일맵에 타일을 배치
         /// </summary>
         /// <param name="position"></param>
         /// <param name="tile"></param>
@@ -354,7 +354,7 @@ namespace Game.GameStage1
         }
 
         /// <summary>
-        /// 맵 중앙을 기준으로 조정된 위치를 반환하는 메서드
+        /// 맵 중앙을 기준으로 조정된 위치를 반환
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>

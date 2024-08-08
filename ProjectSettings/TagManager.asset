@@ -5,15 +5,17 @@ TagManager:
   serializedVersion: 2
   tags:
   - item
+  - Monster
+  - wall
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - LoadingUI
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Monster
   - 
   - 
   - 

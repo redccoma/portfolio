@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 9463220}
   - component: {fileID: 9463222}
   - component: {fileID: 9463221}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: FadeImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 223114137}
   - component: {fileID: 223114139}
   - component: {fileID: 223114138}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 642999089}
   - component: {fileID: 642999090}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: CanvasGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 652098114}
   - component: {fileID: 652098115}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: LoadingGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -433,7 +433,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1044968961}
   - component: {fileID: 1044968962}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -573,7 +573,7 @@ Camera:
   m_GameObject: {fileID: 1112557750}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -592,10 +592,10 @@ Camera:
   field of view: 100
   orthographic: 1
   orthographic size: 3.6
-  m_Depth: 0
+  m_Depth: 100
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -633,7 +633,7 @@ GameObject:
   - component: {fileID: 1312554691}
   - component: {fileID: 1312554693}
   - component: {fileID: 1312554692}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -710,7 +710,7 @@ GameObject:
   - component: {fileID: 1834199578}
   - component: {fileID: 1834199577}
   - component: {fileID: 1834199576}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -766,10 +766,10 @@ Canvas:
   m_GameObject: {fileID: 1834199575}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1112557752}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -811,7 +811,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1923028414}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -850,7 +850,7 @@ GameObject:
   - component: {fileID: 2032129928}
   - component: {fileID: 2032129930}
   - component: {fileID: 2032129929}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
