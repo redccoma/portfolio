@@ -10,7 +10,8 @@ Unity 2021.3.36
 - [CanvasScalerAdjust](https://github.com/redccoma/portfolio/blob/main/Assets/Scripts/UISample/CanvasScalerAdjust.cs) : UI 해상도 처리에 대한 코드 및 샘플씬 입니다.(Scene/UISample.scene)
 - [ReusableScrollView](https://github.com/redccoma/portfolio/blob/main/Assets/Scenes/ReusableScrollSample.unity) : 아이템 재사용 스크롤뷰 샘플씬 입니다. [Scripts/ReusableScrollSample](https://github.com/redccoma/portfolio/tree/main/Assets/Scripts/ReusableScrollSample) 의 코드로만 이루어져있습니다.
 - 게임 : Game_Start 씬을 선택한 상태에서 Editor를 통해 실행합니다. (미니게임추가 예정)
-    - Stage1 : 미로탈출 게임입니다. 횃불 획득시 light 크기 증가. 사다리를 찾으면 게임종료. (코드 리펙토링이 필요한 부분들이 남아있습니다.)
+    - Stage1 : 미로탈출 게임입니다. 횃불 획득시 light 크기 증가. 사다리를 찾으면 게임종료.
+    - Stage2 : 일반적인 로그라이크 게임입니다. 생성되는 몬스터를 피해 목표수치만큼 잡으면 게임 종료.
 
 
 ### 추가예정
