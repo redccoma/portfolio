@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c72f92ae7bf9fe04dac91289efa6c6fb, type: 3}
+  m_Name: TileSet_Tree
+  m_EditorClassIdentifier: 
+  mWidth: 2
+  mHeight: 2
+  mTileData:
+  - tile: {fileID: 11400000, guid: 8a81e296b12715f438766a4cc9b2f53e, type: 2}
+  - tile: {fileID: 11400000, guid: 56e473efb8246844bb64ad2d3e712ce2, type: 2}
+  - tile: {fileID: 11400000, guid: 38b5fef5370ef154180424027618f963, type: 2}
+  - tile: {fileID: 11400000, guid: 4ade28c90622db349817f77e340f8162, type: 2}
+  mTileSetType: 0

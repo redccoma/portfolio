@@ -11,7 +11,7 @@ namespace Game.GameLobby
 {
     public class LobbyScene : MonoBehaviour
     {
-        private int stageCount = 2;
+        private int stageCount = 3;
         
         public StageScrollView scrollView;
         
