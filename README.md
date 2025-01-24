@@ -2,7 +2,7 @@
 간단한 코드샘플과 미니게임들로 코드스타일을 파악할 수 있도록 합니다. 
 
 ### 개발환경
-Unity 2021.3.36
+Unity6 6000.0.34f1
 
 ### 목차
 - [RecentInfo](https://github.com/redccoma/portfolio/blob/main/Assets/Scripts/RecentInfoSample/RecentInfo.cs) : PlayerPrefs를 사용하여 클라이언트에서 데이터를 간단히 다루는 코드입니다.
