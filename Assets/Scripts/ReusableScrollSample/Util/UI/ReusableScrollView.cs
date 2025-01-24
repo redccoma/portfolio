@@ -289,7 +289,8 @@ namespace ReusableScrollSample.Util.UI
 
             while (itemPoolList.Count < requiredPoolSize)
             {
-                CreatePoolItem();
+                if (!CreatePoolItem())
+                    return;
             }
 
             // 풀링 아이템의 삭제는 반드시 필요한 것이 아니므로, 성능상 이슈가 있을 경우 주석처리 가능합니다.
@@ -305,14 +306,14 @@ namespace ReusableScrollSample.Util.UI
         /// 풀 아이템 생성.
         /// 풀 아이템 관리 리스트인 itemPoolList에 추가하는 것까지 포함됨. 
         /// </summary>
-        private void CreatePoolItem()
+        private bool CreatePoolItem()
         {
             GameObject item = Instantiate(itemPrefab, content);
             IScrollViewItem<T> scrollViewItem = item.GetComponent<IScrollViewItem<T>>();
             if (scrollViewItem == null)
             {
                 Debug.LogError("ReusableScrollView 아이템은 IScrollViewItem을 상속받아야 합니다.");
-                return;
+                return false;
             }
             RectTransform rectTransform = item.GetComponent<RectTransform>();
 
@@ -331,6 +332,8 @@ namespace ReusableScrollSample.Util.UI
 
             PoolData poolData = new PoolData(scrollViewItem, item, rectTransform);
             itemPoolList.Add(poolData);
+
+            return true;
         }
 
         /// <summary>
